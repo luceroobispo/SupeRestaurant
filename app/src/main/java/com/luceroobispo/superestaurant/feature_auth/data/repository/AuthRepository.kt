@@ -8,16 +8,16 @@ import com.luceroobispo.superestaurant.feature_auth.data.remote.UserResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-class AuthRepository (val authService: AuthService = AuthServiceFactory.getAuthService()){
-    fun logIn(username: String, password: String){
+class AuthRepository (private val authService: AuthService = AuthServiceFactory.getAuthService()){
+    fun logIn(username: String, password: String, callback: (List<UserResponse>) -> Unit) {
 
         val logIn = authService.logIn(username, password)
 
         logIn.enqueue(object: Callback<List<UserResponse>>{
             override fun onResponse(call: Call<List<UserResponse>>, response: Response<List<UserResponse>>) {
                 if(response.isSuccessful){
-                    val user = response.body()?.first()
-                    println(user)
+                    val userResponse = response.body()?: emptyList()
+                    callback(userResponse)
                 }
             }
             override fun onFailure(call: Call<List<UserResponse>>, t: Throwable) {

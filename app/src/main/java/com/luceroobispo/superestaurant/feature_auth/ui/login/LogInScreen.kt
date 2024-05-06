@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.luceroobispo.superestaurant.feature_auth.data.repository.AuthRepository
 import com.luceroobispo.superestaurant.ui.shared.ButtonPersonalized
 import com.luceroobispo.superestaurant.ui.shared.CustomSubtitle
 import com.luceroobispo.superestaurant.ui.shared.CustomTitle
@@ -20,14 +21,14 @@ import com.luceroobispo.superestaurant.ui.shared.InputTextField
 import com.luceroobispo.superestaurant.ui.shared.PasswordTextField
 
 @Composable
-fun LogInScreen(navigateToSignUp: () -> Unit){
+fun LogInScreen(navigateToSignUp: () -> Unit, navigateToRestaurantsList: () -> Unit, authRepository: AuthRepository = AuthRepository()) {
 
     //Create a mutable state for the username and password
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
     //Create a scaffold to hold the input fields
-    Scaffold{ paddingValues ->
+    Scaffold(){ paddingValues ->
         Column(modifier= Modifier
             .padding(paddingValues)
             .fillMaxWidth(),
@@ -38,7 +39,17 @@ fun LogInScreen(navigateToSignUp: () -> Unit){
             CustomSubtitle("Log in")
             InputTextField(input = username, placeholder = "Username")
             PasswordTextField(password = password, placeholder = "Password")
-            ButtonPersonalized(text = "Log in", {})
+            ButtonPersonalized(
+                text = "Log in"
+            ) {
+                val usernameValue = username.value
+                val passwordValue = password.value
+                authRepository.logIn(usernameValue, passwordValue) { userResponse ->
+                    if (userResponse.isNotEmpty()) {
+                        navigateToRestaurantsList()
+                    }
+                }
+            }
             Row(modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxWidth(),

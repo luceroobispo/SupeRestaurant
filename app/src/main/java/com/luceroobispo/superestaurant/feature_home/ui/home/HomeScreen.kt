@@ -12,11 +12,14 @@ import com.luceroobispo.superestaurant.feature_restaurant.ui.restaurant.Restaura
 @Composable
 fun HomeScreen() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "Restaurants"){
+    NavHost(navController = navController, startDestination = "LogIn"){
         composable("LogIn"){
             LogInScreen(
                 navigateToSignUp = {
                     navController.navigate("SignUp")
+                },
+                navigateToRestaurantsList = {
+                    navController.navigate("Restaurants")
                 }
             )
         }
