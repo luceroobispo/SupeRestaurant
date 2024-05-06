@@ -4,6 +4,8 @@ import com.luceroobispo.superestaurant.feature_restaurant.data.remote.Restaurant
 
 typealias RestaurantsList = List<Restaurant>
 data class Restaurant (
+    val id: Int,
     val name: String,
-    val url: String
+    val url: String,
+    var isFavorite: Boolean = false
 )

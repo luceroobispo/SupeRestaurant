@@ -38,24 +38,38 @@ fun RestaurantsListScreen(restaurantRepository: RestaurantRepository = Restauran
     Scaffold { paddingValues ->
         LazyColumn (modifier = Modifier.padding(paddingValues)) {
             items(restaurants.value) { restaurant ->
-                RestaurantItem(restaurant)
+                RestaurantItem(
+                    restaurant,
+                    insert = {restaurantRepository.insertRestaurant(it)},
+                    delete={restaurantRepository.deleteRestaurant(it)})
             }
         }
     }
 }
 
 @Composable
-fun RestaurantItem(restaurant: Restaurant) {
+fun RestaurantItem(restaurant: Restaurant, insert: (Int)->Unit, delete: (Int)->Unit) {
 
     // Create a mutable state for the favorite status
     val isFavorite = remember { mutableStateOf(false) }
+    isFavorite.value = restaurant.isFavorite //importante para mostrar el estado del favorito actual
 
     // Create a card to hold the restaurant information
     Card(modifier = Modifier.padding(4.dp)){
         Row(modifier = Modifier.fillMaxWidth()){
             RestaurantImage(restaurant.url)
             Text(modifier = Modifier.padding(4.dp).weight(3f), text = restaurant.name)
-            IconButton(modifier = Modifier.weight(1f), onClick = { isFavorite.value = !isFavorite.value }) {
+            IconButton(
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    isFavorite.value = !isFavorite.value
+                    restaurant.isFavorite = isFavorite.value
+                    if(isFavorite.value) {
+                        insert(restaurant.id)
+                    } else {
+                        delete(restaurant.id)
+                    }
+                }) {
                 Icon(
                     Icons.Filled.Favorite,
                     tint = if(isFavorite.value) Color.Red else Color.White,

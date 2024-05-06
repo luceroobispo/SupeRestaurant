@@ -2,6 +2,7 @@ package com.luceroobispo.superestaurant.feature_restaurant.data.repository
 
 import android.util.Log
 import com.luceroobispo.superestaurant.feature_restaurant.data.local.RestaurantDao
+import com.luceroobispo.superestaurant.feature_restaurant.data.local.RestaurantEntity
 import com.luceroobispo.superestaurant.feature_restaurant.data.remote.RestaurantDaoFactory
 import com.luceroobispo.superestaurant.feature_restaurant.data.remote.RestaurantResponseList
 import com.luceroobispo.superestaurant.feature_restaurant.data.remote.RestaurantService
@@ -26,7 +27,7 @@ class RestaurantRepository (
                     var restaurantsList: RestaurantsList = arrayListOf()
 
                     for (restaurantResponse in restaurantResponseList) {
-                        restaurantsList = restaurantsList + Restaurant(restaurantResponse.title, restaurantResponse.poster)
+                        restaurantsList = restaurantsList + Restaurant(restaurantResponse.id, restaurantResponse.title, restaurantResponse.poster, isFavorite(restaurantResponse.id))
                     }
 
                     callback(restaurantsList)
@@ -40,5 +41,17 @@ class RestaurantRepository (
             }
 
         })
+    }
+
+    fun insertRestaurant(id: Int) {
+        restaurantDao.insert(RestaurantEntity(id))
+    }
+
+    fun deleteRestaurant(id: Int) {
+        restaurantDao.delete(RestaurantEntity(id))
+    }
+
+    fun isFavorite(id: Int): Boolean {
+        return (restaurantDao.fetchById(id) != null)
     }
 }
