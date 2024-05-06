@@ -28,7 +28,11 @@ fun HomeScreen() {
             )
         }
         composable("Restaurants"){
-            RestaurantsListScreen()
+            RestaurantsListScreen(
+                navigateToLogIn = {
+                    navController.navigate("LogIn")
+                }
+            )
         }
     }
 }
