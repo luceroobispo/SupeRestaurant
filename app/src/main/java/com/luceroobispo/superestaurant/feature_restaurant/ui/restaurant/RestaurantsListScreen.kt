@@ -6,16 +6,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.luceroobispo.superestaurant.feature_restaurant.data.repository.RestaurantRepository
 import com.luceroobispo.superestaurant.feature_restaurant.domain.Restaurant
+import com.luceroobispo.superestaurant.ui.theme.Cream
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
@@ -39,10 +46,22 @@ fun RestaurantsListScreen(restaurantRepository: RestaurantRepository = Restauran
 
 @Composable
 fun RestaurantItem(restaurant: Restaurant) {
+
+    // Create a mutable state for the favorite status
+    val isFavorite = remember { mutableStateOf(false) }
+
+    // Create a card to hold the restaurant information
     Card(modifier = Modifier.padding(4.dp)){
         Row(modifier = Modifier.fillMaxWidth()){
             RestaurantImage(restaurant.url)
-            Text(modifier = Modifier.padding(4.dp), text = restaurant.name)
+            Text(modifier = Modifier.padding(4.dp).weight(3f), text = restaurant.name)
+            IconButton(modifier = Modifier.weight(1f), onClick = { isFavorite.value = !isFavorite.value }) {
+                Icon(
+                    Icons.Filled.Favorite,
+                    tint = if(isFavorite.value) Color.Red else Color.White,
+                    contentDescription = "Favorite"
+                )
+            }
         }
     }
 }

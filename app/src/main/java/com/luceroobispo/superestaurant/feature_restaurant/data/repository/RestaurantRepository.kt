@@ -1,6 +1,8 @@
 package com.luceroobispo.superestaurant.feature_restaurant.data.repository
 
 import android.util.Log
+import com.luceroobispo.superestaurant.feature_restaurant.data.local.RestaurantDao
+import com.luceroobispo.superestaurant.feature_restaurant.data.remote.RestaurantDaoFactory
 import com.luceroobispo.superestaurant.feature_restaurant.data.remote.RestaurantResponseList
 import com.luceroobispo.superestaurant.feature_restaurant.data.remote.RestaurantService
 import com.luceroobispo.superestaurant.feature_restaurant.data.remote.RestaurantServiceFactory
@@ -10,7 +12,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RestaurantRepository (private val restaurantService: RestaurantService = RestaurantServiceFactory.getRestaurantService()) {
+class RestaurantRepository (
+        private val restaurantService: RestaurantService = RestaurantServiceFactory.getRestaurantService(),
+        private val restaurantDao: RestaurantDao = RestaurantDaoFactory.getRestaurantDao()
+    ) {
     fun getRestaurants(callback: (RestaurantsList) ->Unit) {
         val getRestaurants = restaurantService.getRestaurants()
 
