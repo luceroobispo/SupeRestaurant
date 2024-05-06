@@ -19,7 +19,7 @@ import com.luceroobispo.superestaurant.ui.shared.PasswordTextField
 
 
 @Composable
-fun SignUpScreen(authRepository: AuthRepository = AuthRepository()) {
+fun SignUpScreen(authRepository: AuthRepository = AuthRepository(), navigateToRestaurantsList: () -> Unit) {
 
     // Create mutable states for the user's first name, last name, username, password, and confirm password
     val firstName = remember { mutableStateOf("") }
@@ -53,6 +53,7 @@ fun SignUpScreen(authRepository: AuthRepository = AuthRepository()) {
                         password = password.value
                     )
                     authRepository.signUp(userRequest, {})
+                    navigateToRestaurantsList()
                 }
             )
         }

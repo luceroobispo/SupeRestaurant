@@ -7,20 +7,28 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.luceroobispo.superestaurant.feature_auth.ui.login.LogInScreen
 import com.luceroobispo.superestaurant.feature_auth.ui.signup.SignUpScreen
+import com.luceroobispo.superestaurant.feature_restaurant.ui.restaurant.RestaurantsListScreen
 
 @Composable
 fun HomeScreen() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "LogIn"){
+    NavHost(navController = navController, startDestination = "Restaurants"){
         composable("LogIn"){
             LogInScreen(
-                navigateTo = {
+                navigateToSignUp = {
                     navController.navigate("SignUp")
                 }
             )
         }
         composable("SignUp"){
-            SignUpScreen()
+            SignUpScreen(
+                navigateToRestaurantsList = {
+                    navController.navigate("Restaurants")
+                }
+            )
+        }
+        composable("Restaurants"){
+            RestaurantsListScreen()
         }
     }
 }

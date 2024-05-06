@@ -20,7 +20,7 @@ import com.luceroobispo.superestaurant.ui.shared.InputTextField
 import com.luceroobispo.superestaurant.ui.shared.PasswordTextField
 
 @Composable
-fun LogInScreen(navigateTo: () -> Unit){
+fun LogInScreen(navigateToSignUp: () -> Unit){
 
     //Create a mutable state for the username and password
     val username = remember { mutableStateOf("") }
@@ -46,7 +46,7 @@ fun LogInScreen(navigateTo: () -> Unit){
                 horizontalArrangement = Arrangement.Center
             ){
                 Text(text = "Does not have an account? ")
-                TextButton(onClick = { navigateTo() }) {
+                TextButton(onClick = { navigateToSignUp() }) {
                     Text(text = "Create account")
                 }
             }
